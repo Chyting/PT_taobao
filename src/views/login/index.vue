@@ -3,7 +3,9 @@
     <el-container>
       <el-header height="98px" class="login-header">
         <div class="h-pannel">
-          <img src="../../assets/login/mistore_logo.png" alt="" />
+          <a href="https://www.mi.com/index.html">
+            <img src="../../assets/login/mistore_logo.png" alt="" />
+          </a>
         </div>
       </el-header>
       <el-main>
@@ -36,40 +38,73 @@
                 <div v-if="show" class="main-form__account-login">
                   <el-input
                     v-model="account"
-                    placeholder="邮箱/手机号码/小米ID"
+                    :placeholder="
+                      loginMethod ? '邮箱/手机号码/小米ID' : '手机号码'
+                    "
                     autocomplete="off"
-                  ></el-input>
+                  >
+                    <template slot="prepend" v-if="!loginMethod">+86</template>
+                  </el-input>
                   <el-input
-                    placeholder="密码"
+                    :placeholder="loginMethod ? '密码' : '短信验证码'"
                     v-model="password"
                     show-password
                     auto-complete="new-password"
-                  ></el-input>
-                  <el-button type="primary">登陆</el-button>
-                  <p class="text-login">手机短信登陆/注册</p>
+                  >
+                    <template slot="append" v-if="!loginMethod"
+                      >获取验证码
+                      <div class="shadeBox" @click="getCode"></div
+                    ></template>
+                  </el-input>
+                  <el-button type="primary" @click="login">{{
+                    loginMethod ? "登陆" : "立即登录/注册"
+                  }}</el-button>
+                  <p class="text-login" @click="changeLoginMethod">
+                    {{ loginMethod ? "手机短信登陆/注册" : "用户名密码登陆" }}
+                  </p>
                   <div class="regist-or-forget">
-                    <a href="">
-                      立即注册
+                    <div v-if="loginMethod">
+                      <a href="">
+                        立即注册
+                      </a>
+                      <span>|</span>
+                      <a href="">忘记密码?</a>
+                    </div>
+                    <div v-else>
+                      <a
+                        href="https://account.xiaomi.com/helpcenter/faq/zh_CN/02.faqs/05.sms-and-email-verification-code/faq-1"
+                        >收不到验证码？</a
+                      >
+                    </div>
+                  </div>
+                  <div class="main-form__link">
+                    <a href="" class="link-qq link-icon">
+                      <i class="btn_sns_icontype"></i>
                     </a>
-                    <span>|</span>
-                    <a href="">忘记密码?</a>
+                    <a href="" class="link-weibo link-icon">
+                      <i class="btn_sns_icontype"></i>
+                    </a>
+                    <a href="" class="link-zhifubao link-icon">
+                      <i class="btn_sns_icontype"></i>
+                    </a>
+                    <a href="" class="link-weixin link-icon">
+                      <i class="btn_sns_icontype"></i>
+                    </a>
                   </div>
                 </div>
-                <div v-else class="main-form__code-login"></div>
-              </div>
-              <div class="main-form__link">
-                <a href="" class="link-qq link-icon">
-                  <i class="btn_sns_icontype"></i>
-                </a>
-                <a href="" class="link-weibo link-icon">
-                  <i class="btn_sns_icontype"></i>
-                </a>
-                <a href="" class="link-zhifubao link-icon">
-                  <i class="btn_sns_icontype"></i>
-                </a>
-                <a href="" class="link-weixin link-icon">
-                  <i class="btn_sns_icontype"></i>
-                </a>
+                <div v-else class="main-form__code-login">
+                  <p class="qrcode-text">
+                    请使用小米手机/米家等小米旗下APP扫码登录
+                  </p>
+                  <i class="qrcode-help"></i>
+                  <vue-qr
+                    :logoSrc="imageUrl"
+                    text="上当了吧大傻逼0*0"
+                    :size="240"
+                  ></vue-qr>
+                  <p>使用<span class="xmApp">小米商城APP</span>扫一扫</p>
+                  <p>小米手机可打开「设置」>「小米帐号」扫码登录</p>
+                </div>
               </div>
             </div>
           </div>
@@ -85,10 +120,14 @@
 <script>
 const ACCOUNT_LOGIN = "accountLogin";
 const CODE_LOGIN = "codeLogin";
+const USERNAME_LOGIN = "usernameLogin";
+const PHONE_LOGIN = "phoneLogin";
 import FooterItem from "@/components/layout/footer/index";
+import vueQr from "vue-qr";
 export default {
   components: {
-    FooterItem
+    FooterItem,
+    vueQr
   },
   data() {
     return {
@@ -96,17 +135,39 @@ export default {
       show: true,
       account: "",
       password: "",
+      loginMethod: true,
       ACCOUNT_LOGIN,
-      CODE_LOGIN
+      CODE_LOGIN,
+      USERNAME_LOGIN,
+      PHONE_LOGIN,
+      imageUrl: require("../../assets/logo.jpeg")
     };
   },
+  mounted() {},
+  filters: {},
   methods: {
+    login() {
+      this.$router.push({
+        name: "Home"
+      });
+    },
     changeBoard(val) {
       if (val === ACCOUNT_LOGIN) {
         this.flag = ACCOUNT_LOGIN;
+        this.show = true;
       } else {
         this.flag = CODE_LOGIN;
+        this.show = false;
       }
+    },
+    changeLoginMethod() {
+      this.loginMethod = !this.loginMethod;
+    },
+    getCode() {
+      this.$message({
+        message: "这只是一个网站测试哟~亲",
+        type: "success"
+      });
     }
   }
 };
@@ -179,6 +240,9 @@ export default {
       }
       .regist-or-forget {
         margin-top: 25px;
+        p {
+          color: #999;
+        }
         a {
           text-decoration: none;
           color: #999;
@@ -190,6 +254,37 @@ export default {
           margin: 0 8px;
           color: #999;
         }
+      }
+      .shadeBox {
+        background-color: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 90px;
+        height: 48px;
+        z-index: 1000;
+      }
+    }
+    &__code-login {
+      p {
+        color: #757575;
+        margin-top: 3px;
+      }
+      .qrcode-text {
+        margin-top: 70px;
+        display: inline-block;
+        color: #757575;
+      }
+      .qrcode-help {
+        width: 18px;
+        height: 18px;
+        background: url("../../assets/login/icon_help.png");
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .xmApp {
+        margin: 0 4px;
+        color: #ff6700;
       }
     }
     &__link {
@@ -256,14 +351,24 @@ export default {
 //更改input框样式
 ::v-deep .el-input {
   width: 346px;
+  margin-bottom: 14px;
 }
 ::v-deep .el-input__inner {
   height: 48px;
   border-radius: 0;
-  margin-bottom: 14px;
   padding: 13px 16px 13px 14px;
 }
-
+::v-deep .el-input-group__prepend {
+  background-color: white;
+  color: black;
+}
+::v-deep .el-input-group__append {
+  position: relative;
+  padding: 0 10px;
+  background-color: white;
+  color: #003ab5;
+  cursor: pointer;
+}
 ::v-deep .el-button {
   width: 346px;
   border-radius: 0;
