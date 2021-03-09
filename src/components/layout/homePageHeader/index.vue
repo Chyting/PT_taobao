@@ -4,19 +4,21 @@
       <div class="header-navs__item">
         <div class="navs-item__left">
           <ul class="lists-left">
-            <li>小米商城</li>
-            <li>MIUI</li>
-            <li>loT</li>
-            <li>云服务</li>
-            <li>天星数科</li>
-            <li>有品</li>
-            <li>小爱开放平台</li>
-            <li>企业团购</li>
-            <li>资质证照</li>
-            <li>协议规则</li>
-            <li>下载app</li>
-            <li>智能生活</li>
-            <li class="list-13">Select Location</li>
+            <li><a href="">小米商城</a></li>
+            <li><a href="https://home.miui.com/">MIUI</a></li>
+            <li><a href="https://iot.mi.com/">loT</a></li>
+            <li><a href="https://i.mi.com/">云服务</a></li>
+            <li><a href="https://airstar.com/home">天星数科</a></li>
+            <li><a href="https://www.xiaomiyoupin.com/">有品</a></li>
+            <li><a href="https://xiaoai.mi.com/">小爱开放平台</a></li>
+            <li><a href="https://qiye.mi.com/">企业团购</a></li>
+            <li>
+              <a href="https://www.mi.com/aptitude/list?id=41">资质证照</a>
+            </li>
+            <li><a href="">协议规则</a></li>
+            <li><a href="">下载app</a></li>
+            <li><a href="">智能生活</a></li>
+            <li class="list-13"><a href="">Select Location</a></li>
           </ul>
         </div>
         <div class="navs-item__right">
@@ -34,11 +36,40 @@
               }}</span
               >）</a
             >
+            <div class="shopping-cart__drop-down-box">
+              <div class="goods-list" v-if="hasGoods"></div>
+              <div class="null-good-list" v-else>
+                购物车中暂时没有东西哦~
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="header-list"></div>
+    <div class="header-list">
+      <div class="lists">
+        <div class="lists-logo">
+          <a href="" title="小米官网"></a>
+        </div>
+        <div class="lists-nav">
+          <ul class="nav-list">
+            <li class="nav-item">
+              <a href=""><span>小米手机</span></a>
+              <div class="item-children"></div>
+            </li>
+          </ul>
+          <ul></ul>
+          <ul></ul>
+          <ul></ul>
+          <ul></ul>
+          <ul></ul>
+          <ul></ul>
+          <ul></ul>
+          <ul></ul>
+        </div>
+        <div class="lists-search"></div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -47,7 +78,8 @@ export default {
   name: "index",
   data() {
     return {
-      cartCount: 0
+      cartCount: 0,
+      hasGoods: false
     };
   },
   methods: {
@@ -77,6 +109,80 @@ export default {
     margin: 0 auto;
   }
 }
+.header-list {
+  width: 100%;
+  .lists {
+    width: 1226px;
+    height: 100px;
+    margin: 0 auto;
+    background-color: pink;
+    position: relative;
+    &-logo {
+      float: left;
+      margin-top: 22px;
+      a {
+        position: relative;
+        height: 55px;
+        width: 55px;
+        display: block;
+        overflow: hidden;
+        background-color: #f56600;
+        &:hover:before {
+          transform: translate3d(55px, 0, 0);
+          opacity: 0;
+        }
+        &:hover:after {
+          opacity: 1;
+          margin-left: 0;
+        }
+        &::before {
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 1;
+          width: 55px;
+          height: 55px;
+          content: "";
+          background: url("../../../assets/homePage/mi-logo.png") no-repeat 50%
+            50%;
+          transition: all 0.2s;
+          opacity: 1;
+        }
+        &::after {
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 1;
+          width: 55px;
+          height: 55px;
+          content: "";
+          margin-left: -55px;
+          background: url("../../../assets/homePage/mi-home.png") no-repeat 50%
+            50%;
+          transition: all 0.2s;
+          opacity: 0;
+        }
+      }
+    }
+    &-nav {
+      .nav-list {
+        .nav-item:hover a {
+          color: #f56600;
+        }
+        .item-children {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 80px;
+          border: 1px solid #ededed;
+        }
+      }
+    }
+    &-search {
+    }
+  }
+}
 .navs-item {
   ul li a:hover {
     color: white;
@@ -86,6 +192,10 @@ export default {
     .lists-left {
       li {
         display: inline-block;
+        a {
+          color: #b0b0b0;
+          text-decoration: none;
+        }
       }
       li::after {
         content: "|";
@@ -118,13 +228,25 @@ export default {
     .shopping-cart {
       width: 100px;
       height: 100%;
+      position: relative;
       background-color: #424242;
       margin-left: 10px;
       display: inline-block;
-      cursor: pointer;
       a {
         color: #b0b0b0;
+        height: 40px;
+        display: block;
         text-decoration: none;
+      }
+      a:hover {
+        background-color: white;
+        color: #f56600;
+      }
+      &:hover {
+        .shopping-cart__drop-down-box {
+          display: block;
+          height: 100px;
+        }
       }
       .el-icon-shopping-cart-2 {
         margin-right: 4px;
@@ -132,11 +254,18 @@ export default {
         font-size: 20px;
         vertical-align: middle;
       }
-    }
-    .shopping-cart:hover {
-      background-color: white;
-      a {
-        color: #f56600;
+      &__drop-down-box {
+        position: absolute;
+        width: 316px;
+        left: -214px;
+        top: 39px;
+        display: none;
+        border: 1px solid black;
+        .null-good-list {
+          padding: 20px 0 20px;
+          color: black;
+          display: none;
+        }
       }
     }
   }
