@@ -52,32 +52,144 @@
           <a href="" title="小米官网"></a>
         </div>
         <div class="lists-nav">
-          <ul class="nav-list">
-            <li class="nav-item">
-              <a href=""><span>小米手机</span></a>
-              <div class="item-children"></div>
-            </li>
-          </ul>
-          <ul></ul>
-          <ul></ul>
-          <ul></ul>
-          <ul></ul>
-          <ul></ul>
-          <ul></ul>
-          <ul></ul>
-          <ul></ul>
+          <drop-down :products="testList"></drop-down>
         </div>
         <div class="lists-search"></div>
       </div>
     </div>
   </div>
 </template>
-
 <script>
+import DropDown from "@/components/dropDown/index";
 export default {
   name: "index",
+  components: {
+    DropDown
+  },
   data() {
     return {
+      testList: [
+        {
+          type: "xiaomi",
+          name: "小米手机",
+          items: [
+            {
+              name: "小米10S",
+              price: 3299,
+              link: "mi10S",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/f9149ef3ba2c9025a4a21c98ae793808.png?thumb=1&w=160&h=110&f=webp&q=90"
+            },
+            {
+              name: "小米11",
+              price: 3299,
+              link: "mi11",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/963679eaf3937351e154600ab3448460.png?thumb=1&w=160&h=110&f=webp&q=90"
+            }
+          ]
+        },
+        {
+          type: "redmi",
+          name: "Redmi红米",
+          items: [
+            {
+              name: "K40 Pro 系列",
+              price: 2799,
+              link: "k40pro-series",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/d07671f25a2b3a6c3d4fac189f28fbe9.png?thumb=1&w=160&h=110&f=webp&q=90"
+            },
+            {
+              name: "Redmi K40",
+              price: 5100,
+              link: "redmi40",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/7bd1b02e0329bd5c41d193f01349f991.jpg?thumb=1&w=160&h=110&f=webp&q=90"
+            }
+          ]
+        },
+        {
+          type: "tv",
+          name: "电视",
+          items: [
+            {
+              name: "K40 Pro 系列",
+              price: 2799,
+              link: "k40pro-series",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/d07671f25a2b3a6c3d4fac189f28fbe9.png?thumb=1&w=160&h=110&f=webp&q=90"
+            },
+            {
+              name: "Redmi K40",
+              price: 5100,
+              link: "redmi40",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/7bd1b02e0329bd5c41d193f01349f991.jpg?thumb=1&w=160&h=110&f=webp&q=90"
+            }
+          ]
+        },
+        {
+          type: "notebook",
+          name: "笔记本",
+          items: [
+            {
+              name: "K40 Pro 系列",
+              price: 2799,
+              link: "k40pro-series",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/d07671f25a2b3a6c3d4fac189f28fbe9.png?thumb=1&w=160&h=110&f=webp&q=90"
+            },
+            {
+              name: "Redmi K40",
+              price: 5100,
+              link: "redmi40",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/7bd1b02e0329bd5c41d193f01349f991.jpg?thumb=1&w=160&h=110&f=webp&q=90"
+            }
+          ]
+        },
+        {
+          type: "applances",
+          name: "家电",
+          items: [
+            {
+              name: "K40 Pro 系列",
+              price: 2799,
+              link: "k40pro-series",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/d07671f25a2b3a6c3d4fac189f28fbe9.png?thumb=1&w=160&h=110&f=webp&q=90"
+            },
+            {
+              name: "Redmi K40",
+              price: 5100,
+              link: "redmi40",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/7bd1b02e0329bd5c41d193f01349f991.jpg?thumb=1&w=160&h=110&f=webp&q=90"
+            }
+          ]
+        },
+        {
+          type: "router",
+          name: "路由器",
+          items: [
+            {
+              name: "K40 Pro 系列",
+              price: 2799,
+              link: "k40pro-series",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/d07671f25a2b3a6c3d4fac189f28fbe9.png?thumb=1&w=160&h=110&f=webp&q=90"
+            },
+            {
+              name: "Redmi K40",
+              price: 5100,
+              link: "redmi40",
+              src:
+                "//cdn.cnbj1.fds.api.mi-img.com/mi-mall/7bd1b02e0329bd5c41d193f01349f991.jpg?thumb=1&w=160&h=110&f=webp&q=90"
+            }
+          ]
+        }
+      ],
       cartCount: 0,
       hasGoods: false
     };
@@ -115,7 +227,6 @@ export default {
     width: 1226px;
     height: 100px;
     margin: 0 auto;
-    background-color: pink;
     position: relative;
     &-logo {
       float: left;
@@ -165,6 +276,7 @@ export default {
       }
     }
     &-nav {
+      height: 100%;
       .nav-list {
         .nav-item:hover a {
           color: #f56600;
