@@ -55,19 +55,16 @@
           <drop-down :products="testList"></drop-down>
         </div>
         <div class="lists-search"></div>
-        <timer></timer>
       </div>
     </div>
   </div>
 </template>
 <script>
 import DropDown from "@/components/dropDown/index";
-import Timer from "@/components/timer/index";
 export default {
   name: "index",
   components: {
-    DropDown,
-    Timer
+    DropDown
   },
   data() {
     return {
